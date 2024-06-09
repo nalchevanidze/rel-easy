@@ -8,7 +8,7 @@ import { Github } from "./gh";
 const isBreaking = (changes: Change[]) =>
   Boolean(changes.find(propEq("type", "breaking")));
 
-export class GHReleaseManager extends Api {
+export class GHRelEasy extends Api {
 
   private fetch: FetchApi;
   private render: RenderAPI;

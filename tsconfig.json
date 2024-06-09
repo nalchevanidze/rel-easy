@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "composite": true,
+    "incremental": true,
+    "declaration": true,
+    "declarationMap": true,
+    "allowSyntheticDefaultImports": true,
+    "maxNodeModuleJsDepth": 0,
+    "noImplicitAny": false,
+    "strictNullChecks": true,
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "jsx": "react",
+    "lib": ["es2015", "dom"],
+    "types": ["@types/node"],
+    "rootDir": "src",
+    "outDir": "./dist"
+  },
+  "exclude": ["node_modules"]
+}

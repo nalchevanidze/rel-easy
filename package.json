@@ -2,7 +2,10 @@
   "name": "rel-easy",
   "version": "0.1.0",
   "main": "index.js",
-  "repository": "git@github.com:nalchevanidze/rel-easy.git",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/nalchevanidze/rel-easy.git"
+  },
   "author": "Davit Nalchevanidze <d.nalchevanidze@gmail.com>",
   "license": "MIT",
   "private": false,

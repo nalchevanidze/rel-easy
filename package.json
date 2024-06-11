@@ -1,10 +1,12 @@
 {
   "name": "gh-rel-easy",
   "version": "0.5.0",
-
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/nalchevanidze/rel-easy.git"
+  },
+  "scripts": {
+    "pub": "rm -rf ./dist tsconfig.tsbuildinfo && tsc -b && npm publish"
   },
   "author": "Davit Nalchevanidze <d.nalchevanidze@gmail.com>",
   "license": "MIT",

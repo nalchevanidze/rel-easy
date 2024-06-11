@@ -10,7 +10,7 @@ export type Config = {
   pr: Record<ChangeType, string>;
   pkg(s: string): string;
   version(): Promise<string>;
-  next(isBreaking: boolean): Promise<string>;
+  next(isBreaking: boolean): Promise<void>;
 };
 
 export type Commit = {

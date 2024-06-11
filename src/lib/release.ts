@@ -48,8 +48,8 @@ export class GHRelEasy extends Api {
   public changelog = async () => {
     const version = await this.initialVersion();
     const changes = await this.fetch.changes(version);
-    const nextVersion = await this.next(isBreaking(changes));
-    return this.render.changes(nextVersion, changes);
+    await this.next(isBreaking(changes));
+    return this.render.changes(await this.version(), changes);
   };
 
   public open = async (body: string) => {

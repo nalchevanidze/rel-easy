@@ -8,6 +8,8 @@ const parseNumber = (msg: string) => {
   return num ? parseInt(num, 10) : undefined;
 };
 
+
+
 export class FetchApi extends Api {
   parseLabels = <T extends LabelType>(t: T, labels: string[]) =>
     labels.flatMap((label: string) => {

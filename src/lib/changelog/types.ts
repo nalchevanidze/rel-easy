@@ -5,10 +5,7 @@ export type LabelType = "pr" | "scope";
 export type ChangeType = "major" | "breaking" | "feature" | "fix" | "chore";
 
 export type Config = {
-  gh: {
-    org: string;
-    repo: string;
-  };
+  gh: string;
   scope: Record<string, string>;
   pr: Record<ChangeType, string>;
   pkg(s: string): string;

@@ -34,7 +34,14 @@ const gh = (path: string, body: {}) =>
     .catch((err) => Promise.reject(err.message));
 
 export class Github {
-  constructor(private org: string, private repo: string) {}
+  private org: string;
+  private repo: string;
+
+  constructor(path: string) {
+    const [org, repo] = path.split("/");
+    this.org = org;
+    this.repo = repo;
+  }
 
   private get path() {
     return `github.com/${this.org}/${this.repo}`;

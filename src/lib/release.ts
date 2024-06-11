@@ -1,23 +1,33 @@
 import { FetchApi } from "./changelog/fetch";
 import { RenderAPI } from "./changelog/render";
 import { lastTag } from "./git";
-import { Change, Api, Config } from "./changelog/types";
+import { Change, Api, Config as FullConf, ChangeType } from "./changelog/types";
 import { propEq } from "ramda";
 import { Github } from "./gh";
 
 const isBreaking = (changes: Change[]) =>
   Boolean(changes.find(propEq("type", "breaking")));
 
-export class GHRelEasy extends Api {
+export type Config = Omit<FullConf, "pr"> & { pr?: Record<ChangeType, string> };
 
+const pr = {
+  major: "Major Change",
+  breaking: "Breaking Change",
+  feature: "New features",
+  fix: "Bug Fixes",
+  chore: "Minor Changes",
+};
+
+export class GHRelEasy extends Api {
   private fetch: FetchApi;
   private render: RenderAPI;
 
   constructor(config: Config) {
-    const github = new Github(config.gh.org, config.gh.repo);
-    super(config, github);
-    this.fetch = new FetchApi(config, github);
-    this.render = new RenderAPI(config, github);
+    const github = new Github(config.gh);
+    const cfg = { pr, ...config };
+    super(cfg, github);
+    this.fetch = new FetchApi(cfg, github);
+    this.render = new RenderAPI(cfg, github);
   }
 
   version = () => this.config.version();

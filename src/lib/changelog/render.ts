@@ -29,7 +29,7 @@ const indent = (txt: string, n: number = 1) =>
   space(n, txt.replace(/\n/g, `\n${space(n)}`));
 
 export class RenderAPI extends Api {
-  private pkg = (scope: string) => link(scope, this.config.pkg(scope));
+  private pkg = (key: string) => link(key, this.config.pkg(this.config.scope[key]));
 
   private change = ({
     number,

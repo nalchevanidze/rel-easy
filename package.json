@@ -6,7 +6,7 @@
     "url": "git+ssh://git@github.com/nalchevanidze/rel-easy.git"
   },
   "scripts": {
-    "pub": "rm -rf ./dist tsconfig.tsbuildinfo && tsc -b && npm publish"
+    "build": "rm -rf ./dist tsconfig.tsbuildinfo && tsc -b"
   },
   "author": "Davit Nalchevanidze <d.nalchevanidze@gmail.com>",
   "license": "MIT",

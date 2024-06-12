@@ -7,21 +7,21 @@ type Option = string | false | undefined;
 
 export class CLI {
 
-  constructor(private name:string){}
-
-  void(...ops: Option[]){
-    console.log(this.exec(...ops))
+    constructor(private name:string){}
+  
+    void= async (...ops: Option[])=> {
+      console.log(await this.exec(...ops))
+    }
+  
+    exec = async (...ops: Option[]) => {
+      const { stdout } = await promisify(exec)(
+        [this.name, ops].filter(Boolean).flat().join(" "),
+        {
+          maxBuffer: BUFFER,
+          encoding: "utf-8",
+        }
+      );
+  
+      return stdout.trim();
+    };
   }
-
-  exec = async (...ops: Option[]) => {
-    const { stdout } = await promisify(exec)(
-      [this.name, ops].filter(Boolean).flat().join(" "),
-      {
-        maxBuffer: BUFFER,
-        encoding: "utf-8",
-      }
-    );
-
-    return stdout.trim();
-  };
-}

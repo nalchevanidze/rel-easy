@@ -45,6 +45,10 @@ export class GHRelEasy extends Api {
 
   private next = async (isBreaking: boolean) => this.config.next(isBreaking);
 
+  private open = async (body: string) => {
+    this.github.release(await this.version(), body);
+  };
+
   public changelog = async () => {
     const version = await this.initialVersion();
     const changes = await this.fetch.changes(version);
@@ -52,7 +56,8 @@ export class GHRelEasy extends Api {
     return this.render.changes(await this.version(), changes);
   };
 
-  public open = async (body: string) => {
-    this.github.release(await this.version(), body);
-  };
+  public release = (dry: boolean) =>
+    this.changelog().then((txt) =>
+      this.config.setup().then(() => (dry ? undefined : this.open(txt)))
+    );
 }

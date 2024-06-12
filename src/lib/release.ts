@@ -4,6 +4,7 @@ import { lastTag } from "./git";
 import { Change, Api, Config as FullConf, ChangeType } from "./changelog/types";
 import { propEq } from "ramda";
 import { Github } from "./gh";
+import { writeFile } from "fs/promises";
 
 const isBreaking = (changes: Change[]) =>
   Boolean(changes.find(propEq("type", "breaking")));
@@ -49,11 +50,17 @@ export class GHRelEasy extends Api {
     this.github.release(await this.version(), body);
   };
 
-  public changelog = async () => {
+  public changelog = async (save?: string) => {
     const version = await this.initialVersion();
     const changes = await this.fetch.changes(version);
     await this.next(isBreaking(changes));
-    return this.render.changes(await this.version(), changes);
+    const txt = await this.render.changes(await this.version(), changes);
+
+    if (save) {
+      await writeFile(`./${save}.md`, txt, "utf8");
+    }
+
+    return txt;
   };
 
   public release = (dry: boolean) =>

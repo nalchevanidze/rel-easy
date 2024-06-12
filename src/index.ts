@@ -1,22 +1,3 @@
-import { exec } from "node:child_process";
-import { promisify } from "node:util";
-
 export { GHRelEasy, Config } from "./lib/release";
+export { CLI } from "./lib/cli";
 
-const BUFFER = 10 * 1024 * 1024;
-
-type Option = string | false | undefined;
-
-export const runCli =
-  (name: string) =>
-  async (...ops: Option[]) => {
-    const { stdout } = await promisify(exec)(
-      [name, ops].filter(Boolean).flat().join(" "),
-      {
-        maxBuffer: BUFFER,
-        encoding: "utf-8",
-      }
-    );
-
-    return stdout.trim();
-  };

@@ -5,13 +5,18 @@ export { GHRelEasy, Config } from "./lib/release";
 
 const BUFFER = 10 * 1024 * 1024;
 
+type Option = string | false | undefined;
+
 export const runCli =
   (name: string) =>
-  async (...ops: string[]) => {
-    const { stdout } = await promisify(exec)([name, ops].flat().join(" "), {
-      maxBuffer: BUFFER,
-      encoding: "utf-8",
-    });
+  async (...ops: Option[]) => {
+    const { stdout } = await promisify(exec)(
+      [name, ops].filter(Boolean).flat().join(" "),
+      {
+        maxBuffer: BUFFER,
+        encoding: "utf-8",
+      }
+    );
 
     return stdout.trim();
   };

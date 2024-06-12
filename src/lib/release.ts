@@ -19,6 +19,11 @@ const pr = {
   chore: "Minor Changes",
 };
 
+const exit = (error: Error) => {
+  console.log(error.message);
+  process.exit(1);
+};
+
 export class GHRelEasy extends Api {
   private fetch: FetchApi;
   private render: RenderAPI;
@@ -50,7 +55,7 @@ export class GHRelEasy extends Api {
     this.github.release(await this.version(), body);
   };
 
-  public changelog = async (save?: string) => {
+  private genChangelog = async (save?: string) => {
     const version = await this.initialVersion();
     const changes = await this.fetch.changes(version);
     await this.next(isBreaking(changes));
@@ -63,8 +68,13 @@ export class GHRelEasy extends Api {
     return txt;
   };
 
+  public changelog = async (save?: string) =>
+    this.genChangelog(save).catch(exit);
+
   public release = (dry: boolean) =>
-    this.changelog().then((txt) =>
-      this.config.setup().then(() => (dry ? undefined : this.open(txt)))
-    );
+    this.genChangelog()
+      .then((txt) =>
+        this.config.setup().then(() => (dry ? undefined : this.open(txt)))
+      )
+      .catch(exit);
 }

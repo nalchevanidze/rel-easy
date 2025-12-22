@@ -32,11 +32,13 @@ const exit = (error: Error) => {
 export class GHRelEasy extends Api {
   private fetch: FetchApi;
   private render: RenderAPI;
+  github  : Github;
 
   constructor({ pr, ...config }: RawConfig) {
-    const github = new Github(config.gh);
+    const github = new Github(config.gh, config.user);
     const cfg: Config = { pr: { ...defaultPR, ...pr }, ...config };
     super(cfg, github);
+    this.github = github;
     this.fetch = new FetchApi(cfg, github);
     this.render = new RenderAPI(cfg, github);
   }

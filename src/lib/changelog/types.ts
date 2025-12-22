@@ -21,6 +21,12 @@ export const ConfigSchema = z.object({
   next: z.string(),
   version: z.string(),
   setup: z.string(),
+  user: z
+    .object({
+      name: z.string(),
+      email: z.string().email(),
+    })
+    .optional(),
 });
 
 export type RawConfig = z.infer<typeof ConfigSchema>;

@@ -33,19 +33,34 @@ const gh = (path: string, body: {}) =>
     .then(({ data }) => data.data)
     .catch((err) => Promise.reject(err.message));
 
+const defaultUser = {
+  name: "github-actions[bot]",
+  email: "41898282+github-actions[bot]@users.noreply.github.com",
+};
+
 export class Github {
   private org: string;
   private repo: string;
+  private user: { name: string; email: string };
 
-  constructor(path: string) {
+  constructor(
+    path: string,
+    user: { name: string; email: string } = defaultUser
+  ) {
     const [org, repo] = path.split("/");
     this.org = org;
     this.repo = repo;
+    this.user = user;
   }
 
   private get path() {
     return `github.com/${this.org}/${this.repo}`;
   }
+
+  public setup = () => {
+    git("config", "user.name", `"${this.user.name}"`);
+    git("config", "user.email", `"${this.user.email}"`);
+  };
 
   public isOwner = ({ nameWithOwner }: { nameWithOwner: string }) =>
     nameWithOwner === `${this.org}/${this.repo}`;

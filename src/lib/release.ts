@@ -43,7 +43,7 @@ export class GHRelEasy extends Api {
     this.render = new RenderAPI(cfg, github);
   }
 
-  public async load() {
+  public static async load() {
     const data = await readFile("./releasy.json", "utf8").then(JSON.parse);
     const config = ConfigSchema.parse(data) as Config;
     return new GHRelEasy(config);

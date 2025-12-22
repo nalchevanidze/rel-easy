@@ -23,4 +23,16 @@ export class CLI {
 
     return stdout.trim();
   };
+
+  static void(cmd: string, ...addons: Option[]) {
+    const [program, ...ops] = cmd.split(" ");
+    const cli = new CLI(program);
+    return cli.void(...ops, ...addons);
+  }
+
+  static exec(cmd: string, ...addons: Option[]) {
+    const [program, ...ops] = cmd.split(" ");
+    const cli = new CLI(program);
+    return cli.exec(...ops, ...addons);
+  }
 }

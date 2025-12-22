@@ -9,9 +9,9 @@ export type Config = {
   scope: Record<string, string>;
   pr: Record<ChangeType, string>;
   pkg: string;
-  next(isBreaking: boolean): Promise<void>;
-  version(): Promise<string>;
-  setup(): Promise<void>;
+  next: string;
+  version: string;
+  setup: string;
 };
 
 export type Commit = {

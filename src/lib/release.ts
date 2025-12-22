@@ -4,8 +4,8 @@ import { lastTag } from "./git";
 import {
   Change,
   Api,
-  Config as FullConf,
-  ChangeType,
+  Config,
+  RawConfig,
   ConfigSchema,
 } from "./changelog/types";
 import { propEq } from "ramda";
@@ -16,9 +16,7 @@ import { CLI } from "./cli";
 const isBreaking = (changes: Change[]) =>
   Boolean(changes.find(propEq("type", "breaking")));
 
-export type Config = Omit<FullConf, "pr"> & { pr?: Record<ChangeType, string> };
-
-const pr = {
+const defaultPR = {
   major: "Major Change",
   breaking: "Breaking Change",
   feature: "New features",
@@ -35,9 +33,9 @@ export class GHRelEasy extends Api {
   private fetch: FetchApi;
   private render: RenderAPI;
 
-  constructor(config: Config) {
+  constructor({ pr, ...config }: RawConfig) {
     const github = new Github(config.gh);
-    const cfg = { pr, ...config };
+    const cfg: Config = { pr: { ...defaultPR, ...pr }, ...config };
     super(cfg, github);
     this.fetch = new FetchApi(cfg, github);
     this.render = new RenderAPI(cfg, github);
@@ -45,8 +43,14 @@ export class GHRelEasy extends Api {
 
   public static async load() {
     const data = await readFile("./releasy.json", "utf8").then(JSON.parse);
-    const config = ConfigSchema.parse(data) as Config;
+    const config = ConfigSchema.parse(data);
     return new GHRelEasy(config);
+  }
+
+  public static async cli() {
+    GHRelEasy.load()
+      .then((rel) => rel.cli())
+      .catch(exit);
   }
 
   public version = () => CLI.exec(this.config.version);

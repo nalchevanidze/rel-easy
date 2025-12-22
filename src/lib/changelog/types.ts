@@ -16,14 +16,16 @@ export type ChangeType = z.infer<typeof ChangeTypeSchema>;
 export const ConfigSchema = z.object({
   gh: z.string(),
   scope: z.record(z.string(), z.string()),
-  pr: z.record(ChangeTypeSchema, z.string()),
+  pr: z.record(ChangeTypeSchema, z.string()).optional(),
   pkg: z.string(),
   next: z.string(),
   version: z.string(),
   setup: z.string(),
 });
 
-export type Config = z.infer<typeof ConfigSchema>;
+export type RawConfig = z.infer<typeof ConfigSchema>;
+
+export type Config = Omit<RawConfig, "pr"> & { pr: Record<ChangeType, string> };
 
 export type Commit = {
   message: string;

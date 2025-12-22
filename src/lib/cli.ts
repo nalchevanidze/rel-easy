@@ -6,15 +6,15 @@ const BUFFER = 10 * 1024 * 1024;
 type Option = string | false | undefined;
 
 export class CLI {
-  constructor(private name: string) {}
+  static async void(cmd: string, ...addons: Option[]) {
+    console.log(await CLI.exec(cmd, ...addons));
+  }
 
-  void = async (...ops: Option[]) => {
-    console.log(await this.exec(...ops));
-  };
+  static async exec(cmd: string, ...addons: Option[]) {
+    const [name, ...ops] = cmd.split(" ");
 
-  exec = async (...ops: Option[]) => {
     const { stdout } = await promisify(exec)(
-      [this.name, ops].filter(Boolean).flat().join(" "),
+      [name, ...ops, ...addons].filter(Boolean).flat().join(" "),
       {
         maxBuffer: BUFFER,
         encoding: "utf-8",
@@ -22,17 +22,5 @@ export class CLI {
     );
 
     return stdout.trim();
-  };
-
-  static void(cmd: string, ...addons: Option[]) {
-    const [program, ...ops] = cmd.split(" ");
-    const cli = new CLI(program);
-    return cli.void(...ops, ...addons);
-  }
-
-  static exec(cmd: string, ...addons: Option[]) {
-    const [program, ...ops] = cmd.split(" ");
-    const cli = new CLI(program);
-    return cli.exec(...ops, ...addons);
   }
 }

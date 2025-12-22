@@ -51,8 +51,10 @@ export class GHRelEasy extends Api {
     return version;
   };
 
-  private next = async (isBreaking: boolean) =>
-    CLI.void(this.config.next, isBreaking && "-b");
+  private next = async (isBreaking: boolean) => {
+    const flags = isBreaking ? ["-b"] : [];
+    return CLI.void(this.config.next, ...flags);
+  };
 
   private open = async (body: string) => {
     this.github.release(await this.version(), body);

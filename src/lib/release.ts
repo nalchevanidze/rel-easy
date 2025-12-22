@@ -1,13 +1,18 @@
 import { FetchApi } from "./changelog/fetch";
 import { RenderAPI } from "./changelog/render";
 import { lastTag } from "./git";
-import { Change, Api, Config as FullConf, ChangeType } from "./changelog/types";
+import {
+  Change,
+  Api,
+  Config as FullConf,
+  ChangeType,
+  ConfigSchema,
+} from "./changelog/types";
 import { propEq } from "ramda";
 import { Github } from "./gh";
-import { writeFile } from "fs/promises";
+import { writeFile, readFile } from "fs/promises";
 import { cliActions } from "./cli-actions";
 import { CLI } from "./cli";
-
 const isBreaking = (changes: Change[]) =>
   Boolean(changes.find(propEq("type", "breaking")));
 
@@ -38,7 +43,13 @@ export class GHRelEasy extends Api {
     this.render = new RenderAPI(cfg, github);
   }
 
-  version = () => CLI.exec(this.config.version);
+  public async load() {
+    const data = await readFile("./releasy.json", "utf8").then(JSON.parse);
+    const config = ConfigSchema.parse(data) as Config;
+    return new GHRelEasy(config);
+  }
+
+  public version = () => CLI.exec(this.config.version);
 
   private initialVersion = async () => {
     const version = lastTag();

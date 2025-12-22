@@ -1,18 +1,29 @@
+import * as z from "zod";
 import { Github } from "../gh";
 
 export type LabelType = "pr" | "scope";
 
-export type ChangeType = "major" | "breaking" | "feature" | "fix" | "chore";
+export const ChangeTypeSchema = z.enum([
+  "major",
+  "breaking",
+  "feature",
+  "fix",
+  "chore",
+]);
 
-export type Config = {
-  gh: string;
-  scope: Record<string, string>;
-  pr: Record<ChangeType, string>;
-  pkg: string;
-  next: string;
-  version: string;
-  setup: string;
-};
+export type ChangeType = z.infer<typeof ChangeTypeSchema>;
+
+export const ConfigSchema = z.object({
+  gh: z.string(),
+  scope: z.record(z.string(), z.string()),
+  pr: z.record(ChangeTypeSchema, z.string()),
+  pkg: z.string(),
+  next: z.string(),
+  version: z.string(),
+  setup: z.string(),
+});
+
+export type Config = z.infer<typeof ConfigSchema>;
 
 export type Commit = {
   message: string;

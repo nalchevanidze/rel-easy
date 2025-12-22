@@ -8,7 +8,7 @@ export type Config = {
   gh: string;
   scope: Record<string, string>;
   pr: Record<ChangeType, string>;
-  pkg(s: string): string;
+  pkg: string;
   next(isBreaking: boolean): Promise<void>;
   version(): Promise<string>;
   setup(): Promise<void>;

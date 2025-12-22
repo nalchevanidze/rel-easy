@@ -5,6 +5,7 @@ import { Change, Api, Config as FullConf, ChangeType } from "./changelog/types";
 import { propEq } from "ramda";
 import { Github } from "./gh";
 import { writeFile } from "fs/promises";
+import { cliActions } from "./cli-actions";
 
 const isBreaking = (changes: Change[]) =>
   Boolean(changes.find(propEq("type", "breaking")));
@@ -77,4 +78,8 @@ export class GHRelEasy extends Api {
         this.config.setup().then(() => (dry ? undefined : this.open(txt)))
       )
       .catch(exit);
+
+  public cli() {
+    cliActions(this);
+  }
 }

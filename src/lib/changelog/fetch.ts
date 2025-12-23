@@ -1,5 +1,4 @@
 import { isNil, map, pluck, reject, uniq } from "ramda";
-import { Maybe } from "../types";
 import { Change, Api, Commit, Config, LabelType, PR } from "./types";
 import { commitsAfter } from "../git";
 
@@ -50,7 +49,7 @@ export class FetchApi extends Api {
     }`
   );
 
-  private toPRNumber = (c: Commit): Maybe<number> =>
+  private toPRNumber = (c: Commit): number | undefined =>
     c.associatedPullRequests.nodes.find(({ repository }) =>
       this.github.isOwner(repository)
     )?.number ?? parseNumber(c.message);

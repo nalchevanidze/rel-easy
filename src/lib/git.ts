@@ -7,4 +7,4 @@ const lastTag = () => git("describe", "--abbrev=0", "--tags");
 const commitsAfter = (tag: string) =>
   git("rev-list", "--reverse", `${tag}..`).split("\n");
 
-export { git, getDate, lastTag, commitsAfter, exec };
+export { git, getDate, lastTag, commitsAfter };

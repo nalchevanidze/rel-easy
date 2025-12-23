@@ -11,8 +11,7 @@ import {
 import { propEq } from "ramda";
 import { Github } from "./gh";
 import { writeFile, readFile } from "fs/promises";
-import { cliActions } from "./cli-actions";
-import { CLI } from "./cli";
+import { execVoid, exec, exit } from "./utils";
 const isBreaking = (changes: Change[]) =>
   Boolean(changes.find(propEq("type", "breaking")));
 
@@ -22,11 +21,6 @@ const defaultPR = {
   feature: "New features",
   fix: "Bug Fixes",
   chore: "Minor Changes",
-};
-
-const exit = (error: Error) => {
-  console.log(error.message);
-  process.exit(1);
 };
 
 export class GHRelEasy extends Api {
@@ -47,13 +41,7 @@ export class GHRelEasy extends Api {
     return new GHRelEasy(config);
   }
 
-  public static async cli() {
-    GHRelEasy.load()
-      .then((rel) => rel.cli())
-      .catch(exit);
-  }
-
-  public version = () => CLI.exec(this.config.version);
+  public version = () => exec(this.config.version);
 
   private initialVersion = async () => {
     const version = lastTag();
@@ -68,7 +56,7 @@ export class GHRelEasy extends Api {
 
   private next = async (isBreaking: boolean) => {
     const comand = isBreaking ? this.config.next : `${this.config.next} -b`;
-    return CLI.void(comand);
+    return execVoid(comand);
   };
 
   private open = async (body: string) => {
@@ -95,13 +83,9 @@ export class GHRelEasy extends Api {
   public release = (dry: boolean) =>
     this.genChangelog()
       .then((txt) =>
-        CLI.void(this.config.setup).then(() =>
+        execVoid(this.config.setup).then(() =>
           dry ? undefined : this.open(txt)
         )
       )
       .catch(exit);
-
-  public cli() {
-    cliActions(this);
-  }
 }

@@ -1,33 +1,25 @@
-import { execSync, StdioOptions } from "child_process";
-import { exec as execAsync } from "node:child_process";
+import { execSync, exec as execProcess } from "node:child_process";
 import { promisify } from "node:util";
 
-const BUFFER = 10 * 1024 * 1024; // 10MB
-const ENCODING = "utf-8" as const;
+const options = {
+  maxBuffer: 10 * 1024 * 1024, // 10MB
+  encoding: "utf-8",
+} as const;
 
 export const isKey = <T extends string>(
   obj: Record<T, unknown>,
   key?: string | null
 ): key is T => typeof key === "string" && key in obj;
 
-export const exec = (command: string, stdio?: StdioOptions) =>
-  execSync(command, {
-    maxBuffer: BUFFER,
-    encoding: ENCODING,
-    stdio,
-  })?.trimEnd();
+export const exec = (command: string) => execSync(command, options)?.trimEnd();
 
-export class CLI {
-  static async void(cmd: string) {
-    console.log(await CLI.exec(cmd));
-  }
+export const execVoid = async (cmd: string) => {
+  const { stdout } = await promisify(execProcess)(cmd, options);
 
-  static async exec(cmd: string) {
-    const { stdout } = await promisify(execAsync)(cmd, {
-      maxBuffer: BUFFER,
-      encoding: ENCODING,
-    });
+  return console.log(stdout);
+};
 
-    return stdout.trim();
-  }
-}
+export const exit = (error: Error) => {
+  console.log(error.message);
+  process.exit(1);
+};

@@ -67,8 +67,8 @@ export class GHRelEasy extends Api {
   };
 
   private next = async (isBreaking: boolean) => {
-    const flags = isBreaking ? ["-b"] : [];
-    return CLI.void(this.config.next, ...flags);
+    const comand = isBreaking ? this.config.next : `${this.config.next} -b`;
+    return CLI.void(comand);
   };
 
   private open = async (body: string) => {

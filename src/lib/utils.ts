@@ -13,11 +13,10 @@ export const isKey = <T extends string>(
 
 export const exec = (command: string) => execSync(command, options)?.trimEnd();
 
-export const execVoid = async (cmd: string) => {
-  const { stdout } = await promisify(execProcess)(cmd, options);
-
-  return console.log(stdout);
-};
+export const execVoid = (cmd: string) =>
+  promisify(execProcess)(cmd, options).then(({ stdout }) =>
+    console.log(stdout)
+  );
 
 export const exit = (error: Error) => {
   console.log(error.message);

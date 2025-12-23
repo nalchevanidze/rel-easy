@@ -43,9 +43,9 @@ export class Releasy extends Api {
 
   public version = () => exec(this.config.version);
 
-  private initialVersion = async () => {
+  private initialVersion = () => {
     const version = lastTag();
-    const projectVersion = await this.version();
+    const projectVersion = this.version();
 
     if (version !== projectVersion) {
       throw Error(`versions does not match: ${version} ${projectVersion}`);
@@ -65,10 +65,10 @@ export class Releasy extends Api {
   };
 
   private genChangelog = async (save?: string) => {
-    const version = await this.initialVersion();
+    const version = this.initialVersion();
     const changes = await this.fetch.changes(version);
     await this.next(isBreaking(changes));
-    const txt = await this.render.changes(await this.version(), changes);
+    const txt = await this.render.changes(this.version(), changes);
 
     if (save) {
       await writeFile(`./${save}.md`, txt, "utf8");

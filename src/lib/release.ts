@@ -55,8 +55,8 @@ export class GHRelEasy extends Api {
   };
 
   private next = async (isBreaking: boolean) => {
-    const comand = isBreaking ? this.config.next : `${this.config.next} -b`;
-    return execVoid(comand);
+    const { next } = this.config;
+    return execVoid(isBreaking ? next : `${next} -b`);
   };
 
   private open = async (body: string) => {

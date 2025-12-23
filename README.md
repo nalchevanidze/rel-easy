@@ -1,3 +1,3 @@
-# rel-easy
+# Releasy
 
 Github release generation tools

@@ -1,6 +1,6 @@
 {
   "name": "gh-rel-easy",
-  "version": "0.25.0",
+  "version": "0.26.0",
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/nalchevanidze/rel-easy.git"
@@ -14,7 +14,8 @@
   "files": ["dist"],
   "scripts": {
     "build": "rm -rf ./dist tsconfig.tsbuildinfo && tsc -b",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "dev": "npm run build && ts-node src/index.ts"
   },
   "devDependencies": {
     "@types/node": "^17.0.23",

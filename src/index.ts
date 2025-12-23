@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { Command } from "commander";
-import { Releasy } from "./lib/release";
+import { Releasy } from "./lib/releasy";
 import { exit } from "./lib/utils";
 
 export const main = async () => {

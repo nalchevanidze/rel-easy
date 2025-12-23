@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 import { Command } from "commander";
-import { GHRelEasy } from "./lib/release";
+import { Releasy } from "./lib/release";
 import { exit } from "./lib/utils";
 
 export const main = async () => {
-  const easy = await GHRelEasy.load();
+  const easy = await Releasy.load();
 
   const cli = new Command()
     .name("Releasy")

@@ -12,8 +12,8 @@ export class FetchApi extends Api {
     labels.flatMap((label: string) => {
       const [prefix, key, ...rest] = label.split("/");
 
-      if (prefix !== t) [];
-
+      if (prefix !== t) return [];
+      
       const values: Record<string, unknown> = this.config[t];
 
       if (rest.length || !key || !values[key]) {

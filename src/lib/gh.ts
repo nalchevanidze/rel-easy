@@ -58,8 +58,12 @@ export class Github {
   }
 
   public setup = () => {
-    git("config", "user.name", `"${this.user.name}"`);
-    git("config", "user.email", `"${this.user.email}"`);
+    const name = git("config", "user.name")
+    const email = git("config", "user.email")
+
+    console.log(name, email);
+    // git("config", "user.name", `"${this.user.name}"`);
+    // git("config", "user.email", `"${this.user.email}"`);
   };
 
   public isOwner = ({ nameWithOwner }: { nameWithOwner: string }) =>

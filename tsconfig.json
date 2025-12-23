@@ -1,22 +1,22 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "composite": true,
-    "incremental": true,
-    "declaration": true,
-    "declarationMap": true,
-    "allowSyntheticDefaultImports": true,
-    "maxNodeModuleJsDepth": 0,
-    "noImplicitAny": false,
-    "strictNullChecks": true,
+    "target": "ES2020",
+    "module": "CommonJS",
     "moduleResolution": "node",
+    "rootDir": "src",
+    "outDir": "dist",
+    "strict": true,
+    "strictNullChecks": true,
     "skipLibCheck": true,
     "sourceMap": true,
-    "jsx": "react",
-    "lib": ["es2015", "dom"],
-    "types": ["@types/node"],
-    "rootDir": "src",
-    "outDir": "./dist"
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "types": ["node"],
+    "declaration": false,
+    "incremental": true,
+    "composite": false,
+    "noEmitOnError": true,
+    "forceConsistentCasingInFileNames": true
   },
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "dist"]
 }

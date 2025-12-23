@@ -15,7 +15,9 @@ export class FetchApi extends Api {
 
       if (prefix !== t) [];
 
-      if (rest.length || !name || !this.config[t][name]) {
+      const configValue: Record<string, unknown> = this.config[t];
+
+      if (rest.length || !name || !configValue[name]) {
         throw new Error(`invalid label ${label}`);
       }
 

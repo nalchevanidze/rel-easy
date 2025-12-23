@@ -10,17 +10,20 @@ const parseNumber = (msg: string) => {
 export class FetchApi extends Api {
   parseLabels = <T extends LabelType>(t: T, labels: string[]) =>
     labels.flatMap((label: string) => {
-      const [prefix, name, ...rest] = label.split("/");
+      const [prefix, key, ...rest] = label.split("/");
 
       if (prefix !== t) [];
 
-      const configValue: Record<string, unknown> = this.config[t];
+      const values: Record<string, unknown> = this.config[t];
 
-      if (rest.length || !name || !configValue[name]) {
-        throw new Error(`invalid label ${label}`);
+      if (rest.length || !key || !values[key]) {
+        const fields = Object.keys(values).join(", ");
+        throw new Error(
+          `invalid label ${label}. key ${key} could not be found on object with fields: ${fields}`
+        );
       }
 
-      return [name] as Array<keyof Config[T]>;
+      return [key] as Array<keyof Config[T]>;
     });
 
   private commits = this.github.batch<Commit>(

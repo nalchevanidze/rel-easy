@@ -58,10 +58,10 @@ export class Github {
   }
 
   public setup = () => {
-    if (isUserSet()) {
-      git("config", "user.name", `"${this.user.name}"`);
-      git("config", "user.email", `"${this.user.email}"`);
-    }
+    if (isUserSet()) return;
+
+    git("config", "user.name", `"${this.user.name}"`);
+    git("config", "user.email", `"${this.user.email}"`);
   };
 
   public isOwner = ({ nameWithOwner }: { nameWithOwner: string }) =>

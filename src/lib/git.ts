@@ -7,4 +7,17 @@ const lastTag = () => git("describe", "--abbrev=0", "--tags");
 const commitsAfter = (tag: string) =>
   git("rev-list", "--reverse", `${tag}..`).split("\n");
 
-export { git, getDate, lastTag, commitsAfter };
+const isUserSet = () => {
+  try {
+    const user = `${git("config", "user.name")}${git(
+      "config",
+      "user.email"
+    )}`.trim();
+
+    return user.length > 0;
+  } catch {
+    return false;
+  }
+};
+
+export { git, getDate, lastTag, commitsAfter, isUserSet };

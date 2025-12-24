@@ -1,5 +1,5 @@
 import axios from "axios";
-import { git } from "./git";
+import { git, isUserSet } from "./git";
 
 export const chunks = <T>(xs: T[]): T[][] => {
   const batches: T[][] = [];
@@ -58,11 +58,7 @@ export class Github {
   }
 
   public setup = () => {
-    const user = `${git("config", "user.name")}${git(
-      "config",
-      "user.email"
-    )}`.trim();
-    if (user.length === 0) {
+    if (isUserSet()) {
       git("config", "user.name", `"${this.user.name}"`);
       git("config", "user.email", `"${this.user.email}"`);
     }
